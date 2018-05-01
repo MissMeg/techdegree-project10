@@ -7,7 +7,7 @@ block content
     table
         thead
             tr
-                th Name 
+                th Name
                 th Address
                 th Email
                 th Library ID
@@ -16,7 +16,9 @@ block content
             each patron in patrons
                 tr
                     td
-                        a(href='patronDetail')= patron.name
+                        a(href='patronDetail')
+                        | #{patron.first_name}
+                        | #{patron.last_name}
                     td= patron.address
                     td= patron.email
                     td= patron.libraryId

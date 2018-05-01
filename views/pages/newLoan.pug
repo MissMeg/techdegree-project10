@@ -2,7 +2,7 @@ extends ../layout
 
 block content
     h1= title
-    form
+    form( method="POST" action="/newloan")
         p
             label(for='book_id') Book
             select#book_id
@@ -12,11 +12,11 @@ block content
             label(for='patron_id') Patron
             select#patron_id
                 each patron in patrons
-                    option(value=patron.id)= patron.name
+                    option(value=patron.id) #{patron.first_name} #{patron.last_name}
             label(for='loaned_on') Loaned on:
-            input#loaned_on(type='date')
+            input#loaned_on(type='date' name="loaned_on" value=loan.loaned_on)
         p
             label(for='return_by') Return by:
-            input#return_by(type='date')
+            input#return_by(type='date' name="return_by" value=loan.return_by)
         p
             input(type='submit' value='Create New Loan')

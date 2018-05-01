@@ -5,11 +5,11 @@ block content
     p
         a.button(href='newBook') Create New Book
     p
-        | Filters 
+        | Filters
         a(href='allBooks') All
-        |  | 
+        |  |
         a(href='overdueBooks') Overdue
-        |  | 
+        |  |
         a(href='checkedBooks') Checked Out
     table
         thead
@@ -23,6 +23,6 @@ block content
                 tr
                     td
                         a(href='bookDetail')= book.title
-                    td book.author
-                    td book.genre
-                    td book.yearReleased
+                    td= book.author
+                    td= book.genre
+                    td= book.first_published
