@@ -5,30 +5,36 @@ block content
     p
         a.button(href='newLoan') Create New Loan
     p
-        | Filters 
+        | Filters
         a(href='allLoans') All
-        |  | 
+        |  |
         a(href='overdueLoans') Overdue
-        |  | 
+        |  |
         a(href='checkedLoans') Checked Out
     table
         thead
             tr
                 th Book
-                th Patron 
+                th Patron
                 th Loaned on
-                th Return by 
+                th Return by
                 th Returned on
                 th Action
         tbody
             each loan in loans
                 tr
                     td
-                        a(href='bookDetail')= loan.book
+                        each book in books
+                          - if (loan.book_id === book.id)
+                            p cat
+                            a(href='bookDetail')= book.title
                     td
-                        a(href='patronDetail')= loan.patron
-                    td= loan.loanedOn
-                    td= loan.returnBy
-                    td= loan.returnedOn
+                        each patron in patrons
+                          - if (loan.patron_id === patron.id)
+                            p dog
+                            a(href='patronDetail') #{patron.first_name} #{patron.last_name}
+                    td= loan.loaned_on
+                    td= loan.return_by
+                    td= loan.returned_on
                     td
                         a.button(href='returnBook') Return Book
