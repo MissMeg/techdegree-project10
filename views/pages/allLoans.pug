@@ -26,12 +26,10 @@ block content
                     td
                         each book in books
                           - if (loan.book_id === book.id)
-                            p cat
                             a(href='bookDetail')= book.title
                     td
                         each patron in patrons
                           - if (loan.patron_id === patron.id)
-                            p dog
                             a(href='patronDetail') #{patron.first_name} #{patron.last_name}
                     td= loan.loaned_on
                     td= loan.return_by

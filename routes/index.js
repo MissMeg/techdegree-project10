@@ -17,6 +17,8 @@ router.get('/allbooks', (req, res, next)=>{
 });
 
 router.get('/allloans', (req, res, next)=>{
+  let books = [];
+  let patrons = [];
   Loans.findAll().then((loans)=>{
     Books.findAll().then((books)=>{
       Patrons.findAll().then((patrons)=>{
@@ -58,6 +60,9 @@ router.post('/newbook', (req, res, next) => {
 
 router.post('/newloan', (req, res, next) => {
   Loans.create(req.body).then((loan)=>{
+    console.log('/////////////////////////////////////////');
+    console.log(req.body);
+    console.log('/////////////////////////////////////////');
     res.redirect('/allloans');
   });
 });
