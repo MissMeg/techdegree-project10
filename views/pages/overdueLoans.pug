@@ -21,15 +21,22 @@ block content
                 th Returned on
                 th Action
         tbody
-            tr
-                each loan in loans
-                    tr
-                        td
-                            a(href='bookDetail')= loan.book
-                        td
-                            a(href='patronDetail')= loan.patron
-                        td= loan.loanedOn
-                        td= loan.returnBy
-                        td= loan.returnedOn
-                        td
-                            a.button(href='returnBook') Return Book
+          tr
+            each loan in loans
+              tr
+                td
+                  each book in books
+                    - if (loan.book_id === book.id)
+                      a(href='bookDetail')= book.title
+                td
+                  each patron in patrons
+                    - if (loan.patron_id === patron.id)
+                      a(href='patronDetail') #{patron.first_name} #{patron.last_name}
+                td #{loan.loaned_on.getUTCMonth() + 1}-#{loan.loaned_on.getUTCDate()}-#{loan.loaned_on.getUTCFullYear()}
+                td #{loan.return_by.getUTCMonth() + 1}-#{loan.return_by.getUTCDate()}-#{loan.return_by.getUTCFullYear()}
+                - if (loan.returned_on !== null)
+                  td #{loan.return_on.getUTCMonth() + 1}-#{loan.return_on.getUTCDate()}-#{loan.return_on.getUTCFullYear()}
+                - if (loan.returned_on === null)
+                  td= loan.returned_on
+                td
+                  a.button(href='returnBook') Return Book

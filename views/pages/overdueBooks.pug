@@ -19,10 +19,12 @@ block content
                 th Genre
                 th Year Released
         tbody
+          each loan in loans
             each book in books
+              - if (loan.book_id === book.id)
                 tr
-                    td
-                        a(href='bookDetail')= book.title
-                    td= book.author
-                    td= book.genre
-                    td= book.yearReleased
+                  td
+                    a(href='bookDetail')= book.title
+                  td= book.author
+                  td= book.genre
+                  td= book.first_published

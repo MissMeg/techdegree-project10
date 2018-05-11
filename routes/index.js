@@ -1,9 +1,11 @@
 const
-    express = require("express"),
-    router  = express.Router();
-    Books   = require("../models").Books;
-    Loans   = require("../models").loans;
-    Patrons = require("../models").patrons;
+    express   = require("express"),
+    router    = express.Router(),
+    Books     = require("../models").Books,
+    Loans     = require("../models").loans,
+    Patrons   = require("../models").patrons,
+    Sequelize = require('sequelize'),
+    Op        = Sequelize.Op;
 
 router.get('/', (req, res, next)=>{
   res.render('pages/home', {title: 'Home'});
@@ -75,7 +77,7 @@ router.post('/newpatron', (req, res, next) => {
 });
 
 ////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////GET CHECKEDOUT/////////////////////////////////
+////////////////////////////////GET CHECKED OUT/////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
 router.get('/checkedBooks', (req, res, next)=>{
@@ -104,10 +106,40 @@ router.get('/checkedLoans', (req, res, next)=>{
   });
 });
 
+////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////GET OVERDUE///////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+router.get('/overdueLoans', (req, res, next)=>{
+  Books.findAll().then((books)=>{
+    Patrons.findAll().then((patrons)=>{
+      Loans.findAll({
+        where: {
+          returned_on: null,
+          return_by: {
+            [Op.lt]: new Date()
+          }
+        }
+      }).then((loans)=>{
+        res.render('pages/overdueLoans', {title: 'Overdue Loans', books: books, loans: loans, patrons: patrons});
+      });
+    });
+  });
+});
 
-
-
-
+router.get('/overdueBooks', (req, res, next)=>{
+  Books.findAll().then((books)=>{
+    Loans.findAll({
+      where: {
+        returned_on: null,
+        return_by: {
+          [Op.lt]: new Date()
+        }
+      }
+    }).then((loans)=>{
+      res.render('pages/overdueBooks', {title: 'Overdue Books', books: books, loans: loans});
+    });
+  });
+});
 
 
 
