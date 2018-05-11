@@ -1,7 +1,7 @@
 extends ../layout
 
 block content
-    h1 Checked Out Books
+    h1= title
     p
         a.button(href='newLoan') Create New Loan
     p
@@ -12,23 +12,27 @@ block content
         |  | 
         a(href='checkedLoans') Checked Out
     table
-        thead
-            tr
-                th Book
-                th Patron 
-                th Loaned on
-                th Return by 
-                th Returned on
-                th Action
+      thead
+        tr
+          th Book
+          th Patron 
+          th Loaned on
+          th Return by 
+          th Returned on
+          th Action
         tbody
-            each loan in loans
+          each loan in loans
             tr
-                td
-                    a(href='bookDetail')= loan.book
-                td
-                    a(href='patronDetail')= loan.patron
-                td= loan.loanedOn
-                td= loan.returnBy
-                td= loan.returnedOn
-                td
-                    a.button(href='returnBook') Return Book
+              td
+                each book in books
+                  - if (loan.book_id === book.id)
+                    a(href='bookDetail')= book.title
+              td
+                each patron in patrons
+                  - if (loan.patron_id === patron.id)
+                    a(href='patronDetail') #{patron.first_name} #{patron.last_name}
+              td= loan.loaned_on
+              td= loan.return_by
+              td= loan.returned_on
+              td
+                a.button(href='returnBook') Return Book

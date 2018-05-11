@@ -10,6 +10,8 @@ router.get('/', (req, res, next)=>{
 });
 
 ////////////////////////////////////////////////////////////////////////////////
+///////////////////////////GET 'ALL' PAGES//////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 router.get('/allbooks', (req, res, next)=>{
   Books.findAll().then((books)=>{
     res.render('pages/allbooks', {title: 'All Books', books: books});
@@ -17,8 +19,6 @@ router.get('/allbooks', (req, res, next)=>{
 });
 
 router.get('/allloans', (req, res, next)=>{
-  let books = [];
-  let patrons = [];
   Loans.findAll().then((loans)=>{
     Books.findAll().then((books)=>{
       Patrons.findAll().then((patrons)=>{
@@ -34,7 +34,9 @@ router.get('/allpatrons', (req, res, next)=>{
   });
 });
 
-///////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////GET FORMS////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 router.get('/newbook', (req, res, next)=>{
   res.render('pages/newbook', {title: 'New Book', book: Books.build()});
 });
@@ -52,6 +54,8 @@ router.get('/newpatron', (req, res, next)=>{
 });
 
 ////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////POST FORMS/////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 router.post('/newbook', (req, res, next) => {
   Books.create(req.body).then((book)=>{
     res.redirect('/allbooks');
@@ -60,9 +64,6 @@ router.post('/newbook', (req, res, next) => {
 
 router.post('/newloan', (req, res, next) => {
   Loans.create(req.body).then((loan)=>{
-    console.log('/////////////////////////////////////////');
-    console.log(req.body);
-    console.log('/////////////////////////////////////////');
     res.redirect('/allloans');
   });
 });
@@ -72,6 +73,42 @@ router.post('/newpatron', (req, res, next) => {
     res.redirect('/allpatrons');
   });
 });
+
+////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////GET CHECKEDOUT/////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+router.get('/checkedBooks', (req, res, next)=>{
+  Books.findAll().then((books)=>{
+    Loans.findAll({
+      where: {
+        returned_on: null
+      }
+    }).then((loans)=>{
+      res.render('pages/checkedBooks', {title: 'Checked Out Books', books: books, loans: loans});
+    });
+  });
+});
+
+router.get('/checkedLoans', (req, res, next)=>{
+  Books.findAll().then((books)=>{
+    Patrons.findAll().then((patrons)=>{
+      Loans.findAll({
+        where: {
+          returned_on: null
+        }
+      }).then((loans)=>{
+        res.render('pages/checkedLoans', {title: 'Checked Out Loans', books: books, loans: loans, patrons: patrons});
+      });
+    });
+  });
+});
+
+
+
+
+
+
 
 
 

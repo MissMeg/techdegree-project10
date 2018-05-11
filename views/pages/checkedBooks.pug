@@ -1,7 +1,7 @@
 extends ../layout
 
 block content
-    h1 Checked Out Books
+    h1= title
     p
         a.button(href='newBook') Create New Book
     p
@@ -19,10 +19,12 @@ block content
                 th Genre
                 th Year Released
         tbody
+          each loan in loans
             each book in books
+              - if (loan.book_id === book.id)
                 tr
-                    td
-                        a(href='bookDetail')= book.title
-                    td= book.author
-                    td= book.genre
-                    td= book.yearReleased
+                  td
+                    a(href='bookDetail')= book.title
+                  td= book.author
+                  td= book.genre
+                  td= book.first_published
