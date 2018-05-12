@@ -1,14 +1,15 @@
 ```
-______          _           _     __  _____ 
+______          _           _     __  _____
 | ___ \        (_)         | |   /  ||  _  |
 | |_/ / __ ___  _  ___  ___| |_  `| || |/' |
 |  __/ '__/ _ \| |/ _ \/ __| __|  | ||  /| |
 | |  | | | (_) | |  __/ (__| |_  _| |\ |_/ /
-\_|  |_|  \___/| |\___|\___|\__| \___/\___/ 
+\_|  |_|  \___/| |\___|\___|\__| \___/\___/
               _/ |                          
              |__/                           
 -----------------------------------------------------
 ```
+Because of the recent Node update, there have been some issues with sequelize that have not been resolved yet. If you run into troubles after installing (npm install) then do a rebuild (npm rebuild) and that should help. Also, after closing the program, make sure to check your task manager and close any leftover Node tasks that are still running. Otherwise, your port 3000 will still be in use.
 
 ## Project by: Megan Roberts
 ## Tech Dregree Track: Fullstack JavaScript
@@ -33,10 +34,10 @@ ______          _           _     __  _____
             List All
             List Overdue
             List Checked Out
-    3) Navigation: As a librarian, I should be able to access a main navigation menu from every page of my application. 
-       The navigation should include links to the Books Listing page (all_books.html), Patrons Listing page (all_patrons.html) and Loans Listing page (all_loans.html) so I can view this information. 
+    3) Navigation: As a librarian, I should be able to access a main navigation menu from every page of my application.
+       The navigation should include links to the Books Listing page (all_books.html), Patrons Listing page (all_patrons.html) and Loans Listing page (all_loans.html) so I can view this information.
        See navigation on all pages for examples.
-    4) Books Listing Page: As a librarian, I should be able to filter books by ‘overdue’ and ‘checked out’ status on the Books Listing Page so I can quickly see the state of the library. 
+    4) Books Listing Page: As a librarian, I should be able to filter books by ‘overdue’ and ‘checked out’ status on the Books Listing Page so I can quickly see the state of the library.
        Examples: all_books.html, overdue_books.html and checked_books.html.
     5) Add a New Book: As a librarian, I should be able to add a book to the database so that they can be tracked on the system. Example: new_book.html.
         a) The required fields for user input are:
@@ -97,5 +98,3 @@ ______          _           _     __  _____
 You've been tasked with creating a library management system for a small library. The librarian has been using a simple sqlite database and has been entering data in manually. The librarian wants a more intuitive way to handle the library's books, patrons and loans.
 
 You'll be given static HTML designs, a set of requirements and the existing SQLite database. You'll be required to implement a dynamic website using Express, Pug, and the SQL ORM Sequelize.
-
-I will be completing all requirements including the exceeds expectations.

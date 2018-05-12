@@ -2,16 +2,16 @@ extends ../layout
 
 block content
     h1= title
-    form( method="POST" action="/newpatron")
+    form#newPatron( method="POST" action="/newpatron")
         p
             label(for='first_name') First Name
-            input#first_name(type='text' name="first_name")
+            input.validate#first_name(type='text' name="first_name")
         p
             label(for='last_name') Last Name
-            input#last_name(type='text' name="last_name")
+            input.validate#last_name(type='text' name="last_name")
         p
             label(for='address')  Address
-            input#address(type='text' name ="address")
+            input.validate#address(type='text' name ="address")
         p
             label(for='email') Email
             input#email(type='text' name="email")
@@ -22,4 +22,4 @@ block content
             label(for='zip_code') Zip Code
             input#zip_code(type='text' name="zip_code")
         p
-            input(type='submit' value='Create New Patron')
+            input#newPatronSubmit(type='submit' value='Create New Patron')
