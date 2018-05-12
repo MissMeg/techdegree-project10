@@ -24,7 +24,7 @@ block content
               - if (loan.book_id === book.id)
                 tr
                   td
-                    a(href='bookDetail')= book.title
+                    a(href='/' + book.id + '/book')= book.title
                   td= book.author
                   td= book.genre
                   td= book.first_published

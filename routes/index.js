@@ -7,6 +7,63 @@ const
     Sequelize = require('sequelize'),
     Op        = Sequelize.Op;
 
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////FUNCTIONS////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+function dateConversionForInput () {
+  let today = new Date();
+  let year = today.getUTCFullYear();
+  let spacer = '-';
+  let month = today.getUTCMonth() + 1;
+  let day = today.getUTCDate();
+  let date = '';
+  date += year;
+  date += spacer;
+  if (month < 10) {
+    date += '0';
+    date += month;
+    date += spacer;
+  } else {
+    date += month;
+    date += spacer;
+  }
+  if (day < 10) {
+    date += '0';
+    date += day;
+  } else {
+    date += day;
+  }
+  return date;
+}
+
+function oneWeekConversionForInput () {
+  let today = new Date();
+  let weekForward = new Date(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate() +7);
+  let year = weekForward.getUTCFullYear();
+  let month = weekForward.getUTCMonth() + 1;
+  let day = weekForward.getUTCDate();
+  let spacer = '-';
+  let date = '';
+  date += year;
+  date += spacer;
+  if (month < 10) {
+    date += '0';
+    date += month;
+    date += spacer;
+  } else {
+    date += month;
+    date += spacer;
+  }
+  if (day < 10) {
+    date += '0';
+    date += day;
+  } else {
+    date += day;
+  }
+  return date;
+}
+
+
 router.get('/', (req, res, next)=>{
   res.render('pages/home', {title: 'Home'});
 });
@@ -46,7 +103,7 @@ router.get('/newbook', (req, res, next)=>{
 router.get('/newloan', (req, res, next)=>{
   Books.findAll().then((books)=>{
     Patrons.findAll().then((patrons)=> {
-      res.render('pages/newloan', {title: 'New Loan', loan: Loans.build(), books: books, patrons: patrons});
+      res.render('pages/newloan', {title: 'New Loan', loan: Loans.build(), books: books, patrons: patrons, loan_date: dateConversionForInput(), return_date: oneWeekConversionForInput()});
     });
   });
 });
@@ -141,9 +198,80 @@ router.get('/overdueBooks', (req, res, next)=>{
   });
 });
 
+////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////DETAIL PAGES//////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+router.get('/:id/book', (req, res, next)=>{
+  Books.findById(req.params.id).then((book)=>{
+    Loans.findAll({
+      where: {
+        book_id: book.id
+      }
+    }).then((loans)=>{
+      Patrons.findAll().then((patrons)=>{
+        res.render('pages/bookDetail', {title: 'Book Detail Page', book: book, loans: loans, patrons: patrons});
+      });
+    });
+  });
+});
 
+router.post('/:id/updateBook', (req, res, next) => {
+  Books.findById(req.params.id).then((book)=>{
+    return book.update(req.body).then((book)=>{
+      res.redirect('/allbooks');
+    });
+  });
+});
 
+router.get('/:id/patron', (req, res, next)=>{
+  Patrons.findById(req.params.id).then((patron)=>{
+    Loans.findAll({
+      where: {
+        patron_id: patron.id
+      }
+    }).then((loans)=>{
+      Books.findAll().then((books)=>{
+        res.render('pages/patronDetail', {title: 'Patron Detail Page', patron: patron, loans: loans, books: books});
+      });
+    });
+  });
+});
 
+router.post('/:id/updatePatron', (req, res, next) => {
+  Patrons.findById(req.params.id).then((patron)=>{
+    return patron.update(req.body).then((patron)=>{
+      res.redirect('/allpatrons');
+    });
+  });
+});
+////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////Return Book///////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+router.get('/:id/return', (req, res, next)=>{
+  Books.findById(req.params.id).then((book)=>{
+    Loans.findAll({
+      where: {
+        book_id: book.id,
+        returned_on: null
+      }
+    }).then((loans)=>{
+      Patrons.findAll({
+        where: {
+          id: loans[0].patron_id
+        }
+      }).then((patrons)=>{
+        res.render('pages/returnbook', {title: 'Return Book', book: book, loans: loans, patrons: patrons, date: dateConversionForInput()});
+      });
+    });
+  });
+});
 
+router.post('/:id/return', (req, res, next) => {
+  Loans.findById(req.params.id).then((loan)=>{
+    return loan.update(req.body).then((loan)=>{
+      res.redirect('/allloans');
+    });
+  });
+});
 
 module.exports = router;

@@ -1,23 +1,22 @@
 extends ../layout
 
 block content
-    h1 Patron: 
-        | title
+    h1= title
     p
         strong Book Title: 
-        | loan.book
+        | #{book.title}
     p
         strong Loaned By: 
-        | loan.patron
+        | #{patrons[0].first_name} #{patrons[0].last_name}
     p
         strong Loaned On: 
-        | loan.loanedOn
+        | #{loans[0].loaned_on.getUTCMonth() + 1}-#{loans[0].loaned_on.getUTCDate()}-#{loans[0].loaned_on.getUTCFullYear()}
     p
         strong Return By: 
-        | loan.returnBy
-    form
+        | #{loans[0].return_by.getUTCMonth() + 1}-#{loans[0].return_by.getUTCDate()}-#{loans[0].return_by.getUTCFullYear()}
+    form( method="POST" action='/' + loans[0].id + '/return')
         p
             label(for='returned_on') Returned on:
-            input#returned_on(type='date')
+            input#returned_on(type='date' value=date name='returned_on')
         p
             input(type='submit' value='Return Book')
