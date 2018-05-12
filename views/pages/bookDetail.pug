@@ -3,6 +3,9 @@ extends ../layout
 block content
     h1 Book: 
     | #{book.title}
+    //- 
+      Post the updates to the correct book
+      Place the correct info into each field
     form( method="POST" action='/' + book.id + '/updateBook')
         p
             label(for='title') Title
@@ -29,14 +32,17 @@ block content
                 th Returned on
                 th Action
         tbody
+          //- Place each loan for this book into the table
           each loan in loans
               tr
                   td
                     a(href='/' + book.id + '/book')= book.title
                   td
+                    //- Match the patron_id to the correct patron
                     each patron in patrons
                       - if (loan.patron_id === patron.id)
                         a(href='/' + patron.id + '/patron') #{patron.first_name} #{patron.last_name}
+                  //- Use UTC to print out the correct date
                   td #{loan.loaned_on.getUTCMonth() + 1}-#{loan.loaned_on.getUTCDate()}-#{loan.loaned_on.getUTCFullYear()}
                   td #{loan.return_by.getUTCMonth() + 1}-#{loan.return_by.getUTCDate()}-#{loan.return_by.getUTCFullYear()}
                   - if (loan.returned_on !== null)
@@ -44,4 +50,5 @@ block content
                   - if (loan.returned_on === null)
                     td= loan.returned_on
                   td
+                    //- Use the book.id to return the correct book
                     a(href='/' + book.id + '/return') Return Book

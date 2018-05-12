@@ -1,3 +1,6 @@
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////VARIABLES////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 const
     express   = require("express"),
     router    = express.Router(),
@@ -10,6 +13,8 @@ const
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////FUNCTIONS////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+
+//Date conversion for setting the date input value - has to be a specific format
 function dateConversionForInput () {
   let today = new Date();
   let year = today.getUTCFullYear();
@@ -36,6 +41,7 @@ function dateConversionForInput () {
   return date;
 }
 
+//get the correct date format for one week later
 function oneWeekConversionForInput () {
   let today = new Date();
   let weekForward = new Date(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate() +7);
@@ -63,6 +69,9 @@ function oneWeekConversionForInput () {
   return date;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////ROUTES///////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 router.get('/', (req, res, next)=>{
   res.render('pages/home', {title: 'Home'});
@@ -71,12 +80,15 @@ router.get('/', (req, res, next)=>{
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////GET 'ALL' PAGES//////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+
+//Get all books
 router.get('/allbooks', (req, res, next)=>{
   Books.findAll().then((books)=>{
     res.render('pages/allbooks', {title: 'All Books', books: books});
   });
 });
 
+//Get all required info for loans page
 router.get('/allloans', (req, res, next)=>{
   Loans.findAll().then((loans)=>{
     Books.findAll().then((books)=>{
@@ -87,6 +99,7 @@ router.get('/allloans', (req, res, next)=>{
   });
 });
 
+//Get all patrons
 router.get('/allpatrons', (req, res, next)=>{
   Patrons.findAll().then((patrons)=>{
     res.render('pages/allpatrons', {title: 'All Patrons', patrons: patrons});
@@ -96,6 +109,8 @@ router.get('/allpatrons', (req, res, next)=>{
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////GET FORMS////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+
+//get the forms and set them up for the database
 router.get('/newbook', (req, res, next)=>{
   res.render('pages/newbook', {title: 'New Book', book: Books.build()});
 });
@@ -115,6 +130,8 @@ router.get('/newpatron', (req, res, next)=>{
 ////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////POST FORMS/////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+
+//posting form data to database and redirecting to "all pages"
 router.post('/newbook', (req, res, next) => {
   Books.create(req.body).then((book)=>{
     res.redirect('/allbooks');
@@ -137,6 +154,7 @@ router.post('/newpatron', (req, res, next) => {
 ////////////////////////////////GET CHECKED OUT/////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
+//get loans & books that have been checked out (no return date)
 router.get('/checkedBooks', (req, res, next)=>{
   Books.findAll().then((books)=>{
     Loans.findAll({
@@ -166,6 +184,8 @@ router.get('/checkedLoans', (req, res, next)=>{
 ////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////GET OVERDUE///////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+
+//get overdue books & loans - no return date and the return by date is past
 router.get('/overdueLoans', (req, res, next)=>{
   Books.findAll().then((books)=>{
     Patrons.findAll().then((patrons)=>{
@@ -201,6 +221,8 @@ router.get('/overdueBooks', (req, res, next)=>{
 ////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////DETAIL PAGES//////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+
+//use the specific ids to print out the correct info for the detail page
 router.get('/:id/book', (req, res, next)=>{
   Books.findById(req.params.id).then((book)=>{
     Loans.findAll({
@@ -215,6 +237,7 @@ router.get('/:id/book', (req, res, next)=>{
   });
 });
 
+//post updates to the specific book in the database
 router.post('/:id/updateBook', (req, res, next) => {
   Books.findById(req.params.id).then((book)=>{
     return book.update(req.body).then((book)=>{
@@ -223,6 +246,7 @@ router.post('/:id/updateBook', (req, res, next) => {
   });
 });
 
+//use the specific ids to print out the correct info for the detail page
 router.get('/:id/patron', (req, res, next)=>{
   Patrons.findById(req.params.id).then((patron)=>{
     Loans.findAll({
@@ -236,7 +260,7 @@ router.get('/:id/patron', (req, res, next)=>{
     });
   });
 });
-
+//post updates to the specific book in the database
 router.post('/:id/updatePatron', (req, res, next) => {
   Patrons.findById(req.params.id).then((patron)=>{
     return patron.update(req.body).then((patron)=>{
@@ -244,9 +268,12 @@ router.post('/:id/updatePatron', (req, res, next) => {
     });
   });
 });
+
 ////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////Return Book///////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+
+//get the return page with the info from the sent id param
 router.get('/:id/return', (req, res, next)=>{
   Books.findById(req.params.id).then((book)=>{
     Loans.findAll({
@@ -266,6 +293,7 @@ router.get('/:id/return', (req, res, next)=>{
   });
 });
 
+//post the book return loan update to the database 
 router.post('/:id/return', (req, res, next) => {
   Loans.findById(req.params.id).then((loan)=>{
     return loan.update(req.body).then((loan)=>{

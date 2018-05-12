@@ -19,6 +19,7 @@ block content
                 th Genre
                 th Year Released
         tbody
+          //- List out the gathered loans that are overdue
           each loan in loans
             each book in books
               - if (loan.book_id === book.id)

@@ -3,6 +3,9 @@ extends ../layout
 block content
     h1 Patron: 
         | #{patron.first_name} #{patron.last_name}
+    //- 
+      Update patron using their id
+      Place correct items into each field
     form( method="POST" action='/' + patron.id + '/updatePatron')
         p
             label(for='first_name') First Name
@@ -35,6 +38,7 @@ block content
                 th Returned on
                 th Action
         tbody
+          //- Show all loans for this patron
           each loan in loans
               tr
                   td

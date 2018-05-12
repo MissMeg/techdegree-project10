@@ -3,11 +3,13 @@ extends ../layout
 block content
     h1= title
     form( method="POST" action="/newloan")
+        //- List out each book in the database
         p
             label(for='book_id') Book
             select#book_id(name="book_id")
                 each book in books
                     option(value=book.id name="book_id")= book.title
+        //- List out each patron in the database
         p
             label(for='patron_id') Patron
             select#patron_id(name="patron_id")

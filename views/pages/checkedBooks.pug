@@ -19,6 +19,7 @@ block content
                 th Genre
                 th Year Released
         tbody
+          //- Use the loan data to determine which books have been checked out and print them to the page
           each loan in loans
             each book in books
               - if (loan.book_id === book.id)
