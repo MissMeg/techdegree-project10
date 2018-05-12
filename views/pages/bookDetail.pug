@@ -51,4 +51,5 @@ block content
                     td= loan.returned_on
                   td
                     //- Use the book.id to return the correct book
-                    a(href='/' + book.id + '/return') Return Book
+                    - if (loan.returned_on === null)
+                      a(href='/' + book.id + '/return') Return Book

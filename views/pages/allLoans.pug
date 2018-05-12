@@ -44,5 +44,6 @@ block content
                     td
                       //- Using the book.id for the return to return the matching book
                       each book in books
-                        - if (loan.book_id === book.id)
-                          a(href='/' + book.id + '/return') Return Book
+                        - if (loan.returned_on === null)
+                          - if (loan.book_id === book.id)
+                            a(href='/' + book.id + '/return') Return Book
