@@ -4,7 +4,7 @@ $( document ).ready(() => {
     $('#title').focus();
     $('#first_name').focus();
 
-  //NEW BOOK and NEW PATRON///
+  //NEW BOOK, NEW PATRON, DETAIL PAGES///
   //Make sure the required fields have text
     $('.validate').keyup((e)=>{
       $('#warn').remove();
@@ -21,7 +21,7 @@ $( document ).ready(() => {
 
   //NEW BOOK///
   //Make sure fields have values in order to submit and no warnings are present
-    $('#newBookSubmit').click((e)=>{
+    $('.bookSubmit').click((e)=>{
       if (!$('#title').val() || !$('#author').val() || !$('#genre').val()) {
         e.preventDefault();
         $('form').prepend('<p id="warn">Please complete required fields. (Title, Author, and Genre)</p>');
@@ -85,8 +85,8 @@ $( document ).ready(() => {
         }
       });
 
-      //Make sure fields have values in order to submit and no warnings are present
-        $('#newPatronSubmit').click((e)=>{
+    //Make sure fields have values in order to submit and no warnings are present
+        $('.patronSubmit').click((e)=>{
           if (!$('#first_name').val() || !$('#last_name').val() || !$('#address').val() || !$('#email').val() || !$('#library_id').val() || !$('#zip_code').val()) {
             e.preventDefault();
             $('form').prepend('<p id="warn">Please complete all fields.</p>');
@@ -96,4 +96,34 @@ $( document ).ready(() => {
             $(':input[type="submit"]').prop('disabled', false).removeClass('disabled');
           }
         });
+
+    //Return Book
+    //make sure the required field isnt empty
+      $('#returned_on').focusout((e)=> {
+        $('#warn').remove();
+        $(':input[type="submit"]').prop('disabled', false).removeClass('disabled');
+        if (!$('#returned_on').val()) {
+          e.preventDefault();
+          $('form').prepend('<p id="warn">Please choose a date for the return.</p>');
+          $(':input[type="submit"]').prop('disabled', true).addClass('disabled');
+        } else {
+          $('#warn').remove();
+          $(':input[type="submit"]').prop('disabled', false).removeClass('disabled');
+        }
+      });
+
+    //New Loan
+    //make sure the fields are not empty (auto populated select fields cannot remove a selection so focusing only on dates)
+    $('.dates').focusout((e)=> {
+      $('#warn').remove();
+      $(':input[type="submit"]').prop('disabled', false).removeClass('disabled');
+      if (!$('#loaned_on').val() || !$('#return_by').val() ) {
+        e.preventDefault();
+        $('form').prepend('<p id="warn">Please choose dates for both date fields.</p>');
+        $(':input[type="submit"]').prop('disabled', true).addClass('disabled');
+      } else {
+        $('#warn').remove();
+        $(':input[type="submit"]').prop('disabled', false).removeClass('disabled');
+      }
+    });
 });

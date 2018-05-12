@@ -17,9 +17,9 @@ block content
     p
         strong Return By: 
         | #{loans[0].return_by.getUTCMonth() + 1}-#{loans[0].return_by.getUTCDate()}-#{loans[0].return_by.getUTCFullYear()}
-    form( method="POST" action='/' + loans[0].id + '/return')
+    form#returnBook( method="POST" action='/' + loans[0].id + '/return')
         p
             label(for='returned_on') Returned on:
             input#returned_on(type='date' value=date name='returned_on')
         p
-            input(type='submit' value='Return Book')
+            input#returnBookSubmit(type='submit' value='Return Book')
