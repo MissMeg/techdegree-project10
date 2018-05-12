@@ -40,7 +40,7 @@ block content
                   td #{loan.loaned_on.getUTCMonth() + 1}-#{loan.loaned_on.getUTCDate()}-#{loan.loaned_on.getUTCFullYear()}
                   td #{loan.return_by.getUTCMonth() + 1}-#{loan.return_by.getUTCDate()}-#{loan.return_by.getUTCFullYear()}
                   - if (loan.returned_on !== null)
-                    td #{loan.return_on.getUTCMonth() + 1}-#{loan.return_on.getUTCDate()}-#{loan.return_on.getUTCFullYear()}
+                    td #{loan.returned_on.getUTCMonth() + 1}-#{loan.returned_on.getUTCDate()}-#{loan.returned_on.getUTCFullYear()}
                   - if (loan.returned_on === null)
                     td= loan.returned_on
                   td
