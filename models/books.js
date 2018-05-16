@@ -9,12 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     title: DataTypes.STRING,
-    author: {
-      type: DataTypes.STRING,
-      validate: {
-        isAlpha: true,
-      },
-    },
+    author: DataTypes.STRING,
     genre: {
       type: DataTypes.STRING,
       validate: {
