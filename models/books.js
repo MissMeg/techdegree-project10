@@ -16,12 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         isAlpha: true,
       },
     },
-    first_published: {
-      type: DataTypes.INTEGER,
-      validate: {
-        isNumeric: true,
-      },
-    }
+    first_published: DataTypes.INTEGER,
   }, {});
   Books.associate = function(models) {
     // associations can be defined here

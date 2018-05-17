@@ -85,6 +85,10 @@ router.get('/', (req, res, next)=>{
 router.get('/allbooks', (req, res, next)=>{
   Books.findAll().then((books)=>{
     res.render('pages/allbooks', {title: 'All Books', books: books});
+  }).catch((err)=> {
+    if (err) {
+      next(err);
+    }
   });
 });
 
@@ -94,8 +98,20 @@ router.get('/allloans', (req, res, next)=>{
     Books.findAll().then((books)=>{
       Patrons.findAll().then((patrons)=>{
         res.render('pages/allloans', {title: 'All Loans', loans: loans, books: books, patrons: patrons});
+      }).catch((err)=> {
+        if (err) {
+          next(err);
+        }
       });
+    }).catch((err)=> {
+      if (err) {
+        next(err);
+      }
     });
+  }).catch((err)=> {
+    if (err) {
+      next(err);
+    }
   });
 });
 
@@ -103,6 +119,10 @@ router.get('/allloans', (req, res, next)=>{
 router.get('/allpatrons', (req, res, next)=>{
   Patrons.findAll().then((patrons)=>{
     res.render('pages/allpatrons', {title: 'All Patrons', patrons: patrons});
+  }).catch((err)=> {
+    if (err) {
+      next(err);
+    }
   });
 });
 
@@ -119,7 +139,15 @@ router.get('/newloan', (req, res, next)=>{
   Books.findAll().then((books)=>{
     Patrons.findAll().then((patrons)=> {
       res.render('pages/newloan', {title: 'New Loan', loan: Loans.build(), books: books, patrons: patrons, loan_date: dateConversionForInput(), return_date: oneWeekConversionForInput()});
+    }).catch((err)=> {
+      if (err) {
+        next(err);
+      }
     });
+  }).catch((err)=> {
+    if (err) {
+      next(err);
+    }
   });
 });
 
@@ -135,18 +163,30 @@ router.get('/newpatron', (req, res, next)=>{
 router.post('/newbook', (req, res, next) => {
   Books.create(req.body).then((book)=>{
     res.redirect('/allbooks');
+  }).catch((err)=> {
+    if (err) {
+      next(err);
+    }
   });
 });
 
 router.post('/newloan', (req, res, next) => {
   Loans.create(req.body).then((loan)=>{
     res.redirect('/allloans');
+  }).catch((err)=> {
+    if (err) {
+      next(err);
+    }
   });
 });
 
 router.post('/newpatron', (req, res, next) => {
   Patrons.create(req.body).then((patron)=>{
     res.redirect('/allpatrons');
+  }).catch((err)=> {
+    if (err) {
+      next(err);
+    }
   });
 });
 
@@ -163,7 +203,15 @@ router.get('/checkedBooks', (req, res, next)=>{
       }
     }).then((loans)=>{
       res.render('pages/checkedBooks', {title: 'Checked Out Books', books: books, loans: loans});
+    }).catch((err)=> {
+      if (err) {
+        next(err);
+      }
     });
+  }).catch((err)=> {
+    if (err) {
+      next(err);
+    }
   });
 });
 
@@ -176,8 +224,20 @@ router.get('/checkedLoans', (req, res, next)=>{
         }
       }).then((loans)=>{
         res.render('pages/checkedLoans', {title: 'Checked Out Loans', books: books, loans: loans, patrons: patrons});
+      }).catch((err)=> {
+        if (err) {
+          next(err);
+        }
       });
+    }).catch((err)=> {
+      if (err) {
+        next(err);
+      }
     });
+  }).catch((err)=> {
+    if (err) {
+      next(err);
+    }
   });
 });
 
@@ -198,8 +258,20 @@ router.get('/overdueLoans', (req, res, next)=>{
         }
       }).then((loans)=>{
         res.render('pages/overdueLoans', {title: 'Overdue Loans', books: books, loans: loans, patrons: patrons});
+      }).catch((err)=> {
+        if (err) {
+          next(err);
+        }
       });
+    }).catch((err)=> {
+      if (err) {
+        next(err);
+      }
     });
+  }).catch((err)=> {
+    if (err) {
+      next(err);
+    }
   });
 });
 
@@ -214,7 +286,15 @@ router.get('/overdueBooks', (req, res, next)=>{
       }
     }).then((loans)=>{
       res.render('pages/overdueBooks', {title: 'Overdue Books', books: books, loans: loans});
+    }).catch((err)=> {
+      if (err) {
+        next(err);
+      }
     });
+  }).catch((err)=> {
+    if (err) {
+      next(err);
+    }
   });
 });
 
@@ -232,8 +312,20 @@ router.get('/:id/book', (req, res, next)=>{
     }).then((loans)=>{
       Patrons.findAll().then((patrons)=>{
         res.render('pages/bookDetail', {title: 'Book Detail Page', book: book, loans: loans, patrons: patrons});
+      }).catch((err)=> {
+        if (err) {
+          next(err);
+        }
       });
+    }).catch((err)=> {
+      if (err) {
+        next(err);
+      }
     });
+  }).catch((err)=> {
+    if (err) {
+      next(err);
+    }
   });
 });
 
@@ -242,7 +334,15 @@ router.post('/:id/updateBook', (req, res, next) => {
   Books.findById(req.params.id).then((book)=>{
     return book.update(req.body).then((book)=>{
       res.redirect('/allbooks');
+    }).catch((err)=> {
+      if (err) {
+        next(err);
+      }
     });
+  }).catch((err)=> {
+    if (err) {
+      next(err);
+    }
   });
 });
 
@@ -256,8 +356,20 @@ router.get('/:id/patron', (req, res, next)=>{
     }).then((loans)=>{
       Books.findAll().then((books)=>{
         res.render('pages/patronDetail', {title: 'Patron Detail Page', patron: patron, loans: loans, books: books});
+      }).catch((err)=> {
+        if (err) {
+          next(err);
+        }
       });
+    }).catch((err)=> {
+      if (err) {
+        next(err);
+      }
     });
+  }).catch((err)=> {
+    if (err) {
+      next(err);
+    }
   });
 });
 //post updates to the specific book in the database
@@ -265,7 +377,15 @@ router.post('/:id/updatePatron', (req, res, next) => {
   Patrons.findById(req.params.id).then((patron)=>{
     return patron.update(req.body).then((patron)=>{
       res.redirect('/allpatrons');
+    }).catch((err)=> {
+      if (err) {
+        next(err);
+      }
     });
+  }).catch((err)=> {
+    if (err) {
+      next(err);
+    }
   });
 });
 
@@ -288,17 +408,37 @@ router.get('/:id/return', (req, res, next)=>{
         }
       }).then((patrons)=>{
         res.render('pages/returnbook', {title: 'Return Book', book: book, loans: loans, patrons: patrons, date: dateConversionForInput()});
+      }).catch((err)=> {
+        if (err) {
+          next(err);
+        }
       });
+    }).catch((err)=> {
+      if (err) {
+        next(err);
+      }
     });
+  }).catch((err)=> {
+    if (err) {
+      next(err);
+    }
   });
 });
 
-//post the book return loan update to the database 
+//post the book return loan update to the database
 router.post('/:id/return', (req, res, next) => {
   Loans.findById(req.params.id).then((loan)=>{
     return loan.update(req.body).then((loan)=>{
       res.redirect('/allloans');
+    }).catch((err)=> {
+      if (err) {
+        next(err);
+      }
     });
+  }).catch((err)=> {
+    if (err) {
+      next(err);
+    }
   });
 });
 
